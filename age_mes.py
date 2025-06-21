@@ -2,10 +2,10 @@ import streamlit as st
 from datetime import date
 import base64
 
-# ✅ Page configuration
+#  Page configuration
 st.set_page_config(page_title="Antique Age Engine", page_icon="⌛", layout="centered")
 
-# ✅ Set background from local file
+#  Set background from local file
 def set_bg_from_local(image_file):
     with open(image_file, "rb") as img:
         encoded = base64.b64encode(img.read()).decode()
@@ -55,28 +55,28 @@ def set_bg_from_local(image_file):
         unsafe_allow_html=True
     )
 
-# ✅ Apply background image
+#  Apply background image
 set_bg_from_local("background_cal.jpeg")
 
-# ✅ Title
+#  Title
 st.markdown("<div class='main-title'>🕰️ The Grand Age Engine</div>", unsafe_allow_html=True)
 st.markdown("Enter the sacred details below to reveal your journey through time:")
 
-# ✅ Input Form
+#  Input Form (no default values)
 with st.form("vintage_form"):
     name = st.text_input("📜 Your Given Name:")
-    year = st.number_input("📅 Year of Your Birth:", min_value=1800, max_value=date.today().year, value=2000)
-    month = st.number_input("🌙 Moon Cycle (Month):", min_value=1, max_value=12, value=1)
-    day = st.number_input("☀️ Sun Date (Day):", min_value=1, max_value=31, value=1)
+    year = st.number_input("📅 Year of Your Birth:", min_value=0, max_value=date.today().year)
+    month = st.number_input("🌙 Moon Cycle (Month):", min_value=0, max_value=12)
+    day = st.number_input("☀️ Sun Date (Day):", min_value=0, max_value=31)
     submit = st.form_submit_button("🔍 Reveal My Age Through Time")
 
-# ✅ Age calculation logic
+#  Process after form submission
 if submit:
     try:
         birthdate = date(int(year), int(month), int(day))
         today = date.today()
 
-        # Calculate age
+        # Age calculation
         years = today.year - birthdate.year
         if (today.month, today.day) < (birthdate.month, birthdate.day):
             years -= 1
@@ -97,7 +97,7 @@ if submit:
 
         total_days = (today - birthdate).days
 
-        # ✅ Beautiful visible output
+        #  Display results
         st.markdown(
             f"""
             <div style="
