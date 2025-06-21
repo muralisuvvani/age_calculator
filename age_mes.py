@@ -2,10 +2,10 @@ import streamlit as st
 from datetime import date
 import base64
 
-#  Page configuration
+# ✅ Set page config
 st.set_page_config(page_title="Antique Age Engine", page_icon="⌛", layout="centered")
 
-#  Set background from local file
+# ✅ Set background
 def set_bg_from_local(image_file):
     with open(image_file, "rb") as img:
         encoded = base64.b64encode(img.read()).decode()
@@ -55,22 +55,22 @@ def set_bg_from_local(image_file):
         unsafe_allow_html=True
     )
 
-#  Apply background image
+# ✅ Apply background
 set_bg_from_local("background_cal.jpeg")
 
-#  Title
+# ✅ Title
 st.markdown("<div class='main-title'>🕰️ The Grand Age Engine</div>", unsafe_allow_html=True)
-st.markdown("Enter the sacred details below to reveal your journey through time:")
+st.markdown("Enter your details to calculate your age:")
 
-#  Input Form (no default values)
-with st.form("vintage_form"):
+# ✅ Input form (no pre-filled default values)
+with st.form("age_form"):
     name = st.text_input("📜 Your Given Name:")
-    year = st.number_input("📅 Year of Your Birth:", min_value=0, max_value=date.today().year)
-    month = st.number_input("🌙 Moon Cycle (Month):", min_value=0, max_value=12)
-    day = st.number_input("☀️ Sun Date (Day):", min_value=0, max_value=31)
-    submit = st.form_submit_button("🔍 Reveal My Age Through Time")
+    year = st.number_input("📅 Year of Birth:", min_value=1800, max_value=date.today().year, step=1)
+    month = st.number_input("🌙 Birth Month:", min_value=1, max_value=12, step=1)
+    day = st.number_input("☀️ Birth Day:", min_value=1, max_value=31, step=1)
+    submit = st.form_submit_button("🔍 Reveal My Age")
 
-#  Process after form submission
+# ✅ Process on submit
 if submit:
     try:
         birthdate = date(int(year), int(month), int(day))
@@ -90,14 +90,13 @@ if submit:
         if today.day >= birthdate.day:
             days = today.day - birthdate.day
         else:
-            previous_month = today.month - 1 or 12
-            previous_year = today.year if today.month != 1 else today.year - 1
-            days_in_prev_month = (date(today.year, today.month, 1) - date(previous_year, previous_month, 1)).days
+            prev_month = today.month - 1 or 12
+            prev_year = today.year if today.month != 1 else today.year - 1
+            days_in_prev_month = (date(today.year, today.month, 1) - date(prev_year, prev_month, 1)).days
             days = days_in_prev_month + today.day - birthdate.day
 
         total_days = (today - birthdate).days
 
-        #  Display results
         st.markdown(
             f"""
             <div style="
@@ -110,7 +109,7 @@ if submit:
                 box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
                 margin-bottom: 15px;
             ">
-                🧭 <strong>{name}</strong>, your journey spans <strong>{years} years, {months} moons, and {days} days</strong>.
+                🧭 <strong>{name}</strong>, your journey spans <strong>{years} years, {months} months, and {days} days</strong>.
             </div>
             """,
             unsafe_allow_html=True
